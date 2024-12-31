@@ -143,12 +143,12 @@ Url du site : https://www.flashscore.fr
     
 
 - Ecriture et gestion de fichiers   
-    **- Archivage des données :**
+    - **Archivage des données** :
         - Après la création des dossiers et des fichiers CSV, compressez automatiquement l’intégralité du dossier de la journée dans une archive ZIP pour économiser de l’espace disque.
         - Nom de l’archive : YYYY-MM-DD_results.zip.
         - Emplacement : Racine du projet ou un dossier dédié (archives/).
 
-    **- Récapitulatif des données :**
+    - **Récapitulatif des données** :
         - Ajoutez un fichier texte recap.txt dans le dossier principal pour résumer les données du jour.
             - Nombre total de sports traités.
             - Nombre total de matchs enregistrés.
