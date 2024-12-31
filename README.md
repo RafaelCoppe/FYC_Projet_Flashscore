@@ -165,7 +165,7 @@ Url du site : https://www.flashscore.fr
         - Rugby : 14 matchs (1 ligue, 1 pays)
         ```
 
-    **- Export JSON (complément au CSV) :**
+    - **Export JSON (complément au CSV)** :
         - Sauvegardez les données de chaque ligue dans un fichier JSON en plus du fichier CSV.
         - Format structuré, idéal pour une réutilisation dans des projets ou des API.
 
