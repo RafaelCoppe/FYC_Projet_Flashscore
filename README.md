@@ -25,7 +25,19 @@ Url du site : https://www.flashscore.fr
     
 
 - Ecriture et gestion de fichiers   
-    
+    - **Système de fichiers** :
+        - Le système doit pouvoir gérer la création dynamique de dossiers imbriqués (compatibilité avec les systèmes Windows, macOS, Linux).
+        - Les noms des fichiers et dossiers doivent être validés pour éviter des caractères non compatibles avec les systèmes de fichiers.
+          
+    - **Encodage des fichiers** :
+        - Tous les fichiers CSV doivent être encodés en UTF-8 pour garantir la compatibilité avec les caractères spéciaux et les langues internationales.
+  
+    - **Volume des données** :
+        - Si un sport ou une ligue comporte de nombreux matchs (plusieurs centaines), les performances du script et la taille des fichiers doivent être surveillées.
+          
+    - **Suppression automatique des données inutiles** :
+        - Les ligues vides (sans matchs) et les entités sans ligues actives doivent être nettoyées avant la création des fichiers.
+
 
 - Test unitaire   
     
@@ -70,8 +82,48 @@ Url du site : https://www.flashscore.fr
     
 
 - Ecriture et gestion de fichiers   
-    
+    - **Création de la hiérarchie des dossiers** :
+        - Le script doit créer une hiérarchie de dossiers basée sur la structure suivante :
+            - Dossier racine : Un dossier par jour au format YYYY-MM-DD.
+            - *Sous-dossiers par sport* : Un sous-dossier pour chaque sport traité.
+            - *Sous-dossiers par entité/pays* : Chaque pays ou entité doit avoir un sous-dossier dans le sport correspondant.
+            - *Sous-dossiers par ligue* : Chaque ligue a son propre dossier dans l’entité correspondante.
+        - Exemple :
+            ```
+              2024-12-30/
+              ├── football/
+              │   ├── france/
+              │   │   ├── ligue_1/
+              │   │   │   └── ligue_1_matches.csv
+              │   │   ├── ligue_2/
+              │   │   │   └── ligue_2_matches.csv
+              ├── rugby/
+              │   ├── angleterre/
+              │   │   ├── premiership/
+              │   │   │   └── premiership_matches.csv
+            ```
 
+
+    - **Sauvegarde des données en fichiers CSV** :
+        - Les données de chaque ligue doivent être sauvegardées dans des fichiers CSV individuels.
+        - *Format des colonnes* : Chaque fichier CSV doit inclure les colonnes suivantes :
+            - Lien vers le résumé du match (`link`).
+            - Nom des équipes ou participants (`team1`, `team2`).
+            - Scores finaux des équipes (`score1`, `score2`).
+            - Exemple de contenu CSV :
+                ```
+                link,team1,score1,team2,score2
+                https://flashscore.fr/match/1,equipeA,3,equipeB,2
+                https://flashscore.fr/match/2,equipeC,1,equipeD,1
+                ```
+                **Encodage** : Les fichiers doivent être encodés en UTF-8.
+
+    - **Suppression des données inutiles** :
+        - Les ligues sans matchs doivent être supprimées avant la sauvegarde des fichiers.
+        - Si un pays n’a aucune ligue active, le dossier correspondant doit être supprimé.
+
+        *Astuce : Implémentez une vérification avant de créer chaque fichier ou dossier.*
+    
 - Test unitaire   
     
 
@@ -91,7 +143,31 @@ Url du site : https://www.flashscore.fr
     
 
 - Ecriture et gestion de fichiers   
-    
+    **- Archivage des données :**
+        - Après la création des dossiers et des fichiers CSV, compressez automatiquement l’intégralité du dossier de la journée dans une archive ZIP pour économiser de l’espace disque.
+        - Nom de l’archive : YYYY-MM-DD_results.zip.
+        - Emplacement : Racine du projet ou un dossier dédié (archives/).
+
+    **- Récapitulatif des données :**
+        - Ajoutez un fichier texte recap.txt dans le dossier principal pour résumer les données du jour.
+            - Nombre total de sports traités.
+            - Nombre total de matchs enregistrés.
+            - Détail des sports avec leurs statistiques (nombre de ligues, nombre de matchs).
+
+        *Exemple de contenu :*
+        ```
+        Date : 2024-12-30
+        Nombre total de sports : 2
+        Nombre total de matchs : 42
+
+        Détails :
+        - Football : 28 matchs (3 ligues, 2 pays)
+        - Rugby : 14 matchs (1 ligue, 1 pays)
+        ```
+
+    **- Export JSON (complément au CSV) :**
+        - Sauvegardez les données de chaque ligue dans un fichier JSON en plus du fichier CSV.
+        - Format structuré, idéal pour une réutilisation dans des projets ou des API.
 
 - Test unitaire   
     
