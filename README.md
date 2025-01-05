@@ -21,8 +21,12 @@ Url du site : https://www.flashscore.fr
     - Selenium pour le scraping
     - Driver navigateur : libre
 
-- Gestion de tâches système   
-    
+- Gestion de tâches systèmes
+    Bibliothèques :
+    - pip3 pour les installations
+    - psutil
+    - firefox
+    - et d'autres ressources que vous pourrez installer progressivement...
 
 - Ecriture et gestion de fichiers   
     - **Système de fichiers** :
@@ -78,8 +82,54 @@ Url du site : https://www.flashscore.fr
         }
         ```
 
-- Gestion de tâches système   
-    
+- Gestion de tâches systèmes   
+    - **Automatisation des processus**
+
+         L'objectif ici est d'automatiser un maximum de tâches systèmes pouvant être utiles à notre programme.
+         Dans cette même idée, il faudrait donc :
+
+         **Créer des scripts d'automatisation** :
+
+                - script permettant d'archiver
+                - logger (logs)
+                - monitoring (watch and restart)
+                - resources_monitor (analyse des ressources utilisées)
+                - notifier (envoi d'une notification)
+
+      Certains pré-requis seront nécessaires au bon fonctionnement des scripts, ces ressources devront donc être installées via ligne de commande depuis l'IDE.
+
+      Exemple : **webdriver-manager**, **chromium-chromedriver** ou bien **psutil** pour ne citer que ces derniers.
+
+      On souhaiterait se retrouver avec une structure de projet similaire à celle-ci :
+
+
+               FYC_Projet_Flashscore/
+                    ├── flashscore_scraper/        
+                    ├── automation/                
+                    │   ├── scheduler.py           
+                    │   ├── logger_config.py       
+                    │   ├── monitor.py             
+                    │   ├── resources_monitor.py  
+                    │   ├── archiver.py            
+                    ├── data/                     
+                    │   ├── raw/                  
+                    │   ├── archives/              
+                    ├── tests/                     
+                    ├── requirements.txt          
+                    └── README.md
+
+      Explication de la structure :
+
+      - Le dossier *automation* contiendra les scripts permettant d'effectuer les tâches souhaitées
+      - Le dossier *data* permettra de stocker toute donnée eventuel pouvant être produite en tant que résultat d'un script
+      - Le fichier *requirements* peut contenir des outils ou bibliothèques pouvant être utiles aux scripts
+
+  
+     
+            *Astuce : Pensez à bien tester vos scripts et prendre connaissance des résultats obtenus.*
+
+      
+
 
 - Ecriture et gestion de fichiers   
     - **Création de la hiérarchie des dossiers** :
