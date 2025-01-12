@@ -127,8 +127,11 @@ try:
 finally:
     driver.quit()  # Fermer le navigateur
 
-# Suite du code
+
+# Fonction pour créer la structure de répertoires
 def create_directory_structure(base_path, sport, entity, league):
+    os.makedirs(base_path, exist_ok=True)
+
     sport_path = os.path.join(base_path, sport)
     os.makedirs(sport_path, exist_ok=True)
 
@@ -140,6 +143,7 @@ def create_directory_structure(base_path, sport, entity, league):
 
     return league_path
 
+# Fonction pour écrire les résultats dans un fichier CSV
 def write_csv(file_path, matches):
     headers = ['link', 'team1', 'score1', 'team2', 'score2']
     with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
@@ -147,17 +151,13 @@ def write_csv(file_path, matches):
         writer.writeheader()
         writer.writerows(matches)
 
+# Fonction pour écrire les résultats dans un fichier JSON
 def write_json(file_path, matches):
-    """
-    Écrit les données des matchs dans un fichier JSON.
-    """
     with open(file_path, 'w', encoding='utf-8') as jsonfile:
         json.dump(matches, jsonfile, indent=4, ensure_ascii=False)
 
+# Fonction pour générer un fichier récapitulatif
 def write_recap_file(base_path, final_data):
-    """
-    Crée un fichier récapitulatif détaillé des données dans le dossier principal.
-    """
     recap_file = os.path.join(base_path, 'recap.txt')
     total_sports = len(final_data)
     total_matches = 0
@@ -182,18 +182,14 @@ def write_recap_file(base_path, final_data):
     with open(recap_file, 'w', encoding='utf-8') as file:
         file.write('\n'.join(lines))
 
+# Fonction pour archiver les résultats
 def archive_results(base_path):
-    """
-    Crée une archive ZIP du dossier principal.
-    """
     archive_path = f"{base_path}.zip"
     shutil.make_archive(base_path, 'zip', base_path)
     print(f"Dossier archivé : {archive_path}")
 
+# Fonction pour demander le choix de l'utilisateur
 def get_user_choice():
-    """
-    Demande à l'utilisateur de choisir le format de sauvegarde (CSV, JSON ou les deux).
-    """
     print("Choisissez le format d'enregistrement des données :")
     print("1. CSV uniquement")
     print("2. JSON uniquement")
@@ -206,31 +202,32 @@ def get_user_choice():
         else:
             print("Choix invalide. Veuillez entrer 1, 2 ou 3.")
 
+# Fonction principale pour sauvegarder les résultats
 def save_results(final_data):
-    """
-    Sauvegarde les résultats de `final_data` dans des dossiers et fichiers selon le choix de l'utilisateur.
-    """
     # Obtenir le choix de l'utilisateur
     choice = get_user_choice()
 
-    yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-    base_path = os.path.join(os.getcwd(), yesterday)
+    # Chemin de base pour le dossier "data" avec la date du jour
+    today = datetime.now().strftime('%Y-%m-%d')
+    base_path = os.path.join(os.getcwd(), 'data', today)
+    os.makedirs(base_path, exist_ok=True)  # Crée le dossier "data/YYYY-MM-DD"
 
     for sport, sport_data in final_data.items():
         for entity, entity_data in sport_data.items():
             for league, matches in entity_data.items():
                 league_path = create_directory_structure(base_path, sport, entity, league)
 
-                # Enregistrer selon le choix de l'utilisateur
+                # Nom des fichiers avec la date et le sport
+                base_filename = f"{today}_{sport}"
                 if choice == '1':  # CSV uniquement
-                    csv_file_path = os.path.join(league_path, f"{league}_matches.csv")
+                    csv_file_path = os.path.join(league_path, f"{base_filename}.csv")
                     write_csv(csv_file_path, matches)
                 elif choice == '2':  # JSON uniquement
-                    json_file_path = os.path.join(league_path, f"{league}_matches.json")
+                    json_file_path = os.path.join(league_path, f"{base_filename}.json")
                     write_json(json_file_path, matches)
                 elif choice == '3':  # CSV et JSON
-                    csv_file_path = os.path.join(league_path, f"{league}_matches.csv")
-                    json_file_path = os.path.join(league_path, f"{league}_matches.json")
+                    csv_file_path = os.path.join(league_path, f"{base_filename}.csv")
+                    json_file_path = os.path.join(league_path, f"{base_filename}.json")
                     write_csv(csv_file_path, matches)
                     write_json(json_file_path, matches)
 
@@ -240,5 +237,4 @@ def save_results(final_data):
     # Archiver le dossier principal
     archive_results(base_path)
 
-# Exemple d'appel
 save_results(final_data)
