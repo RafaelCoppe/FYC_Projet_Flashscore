@@ -30,17 +30,21 @@ Url du site : https://www.flashscore.fr
 
 - Ecriture et gestion de fichiers   
     - **Système de fichiers** :
-        - Le système doit pouvoir gérer la création dynamique de dossiers imbriqués (compatibilité avec les systèmes Windows, macOS, Linux).
-        - Les noms des fichiers et dossiers doivent être validés pour éviter des caractères non compatibles avec les systèmes de fichiers.
+        - Le système doit permettre la création dynamique de dossiers imbriqués compatibles avec Windows, macOS, et Linux.
+        - Validation des noms de fichiers et dossiers pour éviter les caractères non pris en charge.
+        - Bibliothèque utilisée : `os`.
           
     - **Encodage des fichiers** :
-        - Tous les fichiers CSV doivent être encodés en UTF-8 pour garantir la compatibilité avec les caractères spéciaux et les langues internationales.
+        - Tous les fichiers CSV sont encodés en UTF-8 pour garantir la compatibilité avec les caractères spéciaux et les langues internationales.
+        - Bibliothèque utilisée : `csv`.
   
     - **Volume des données** :
-        - Si un sport ou une ligue comporte de nombreux matchs (plusieurs centaines), les performances du script et la taille des fichiers doivent être surveillées.
+        - Gestion efficace des données volumineuses (centaines de matchs par ligue) pour éviter les ralentissements et les fichiers trop lourds.
+        - Bibliothèques utilisées : `csv`, `json`.
           
     - **Suppression automatique des données inutiles** :
-        - Les ligues vides (sans matchs) et les entités sans ligues actives doivent être nettoyées avant la création des fichiers.
+        - Les ligues sans matchs et les entités sans ligues actives sont nettoyées avant l’écriture.
+        - Bibliothèque utilisée : `dict` (pour le traitement des données en mémoire).
 
 
 - Test unitaire   
